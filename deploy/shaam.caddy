@@ -1,0 +1,7 @@
+http://shaam.futile.studio {
+	import common
+	# The TV and every phone share one WebSocket; buffered, a reveal reaches screens at different times.
+	reverse_proxy 127.0.0.1:4401 {
+		flush_interval -1
+	}
+}

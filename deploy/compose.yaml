@@ -1,0 +1,21 @@
+# Coolify on Jinx (FRC/DEPLOY.md). Host network: the app listens on 4401 behind Caddy.
+services:
+  shaam:
+    image: ghcr.io/mayurjivani/shaam:latest
+    pull_policy: always
+    network_mode: host
+    restart: unless-stopped
+    user: "1000:1000"
+    command: ["node", "server/index.js"]
+    environment:
+      NODE_ENV: "production"
+      SHAAM_PORT: "4401"
+      SHAAM_DATA_DIR: "/data"
+    volumes:
+      - /var/lib/private/shaam:/data
+    mem_limit: 256m
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]

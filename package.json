@@ -1,0 +1,29 @@
+{
+  "name": "shaam",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "astro build",
+    "start": "node server/index.js",
+    "test": "node --test \"tests/*.test.js\"",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.0.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^7.3.8",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "ws": "^8.20.0"
+  },
+  "overrides": {
+    "vite": "^8.3.1"
+  }
+}

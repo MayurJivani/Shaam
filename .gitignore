@@ -1,0 +1,22 @@
+# build output
+dist/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# logs
+npm-debug.log*
+# environment variables
+.env
+.env.production
+# parties that survive a restart
+data/
+.DS_Store
+.vscode/
+.idea/
+
+# Claude Code and local tooling
+.claude/
+.codegraph/
+.impeccable
+.mcp.json

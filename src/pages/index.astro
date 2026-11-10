@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { GAMES } from "../../shared/games.js"
+---
+
+<Layout title="Shaam · party games">
+  <main class="landing">
+    <h1 class="brand">Shaam</h1>
+    <p class="tagline">Party games for one TV and a room full of phones. Start a party, play anything on the shelf, and see who had the best night.</p>
+    <div class="row">
+      <a class="btn primary big" href="/tv">Start a party on this screen</a>
+      <a class="btn big" href="/join">Join with a code</a>
+    </div>
+    <ul class="shelf static">
+      {GAMES.map((g) => (
+        <li class="shelf-card">
+          <span class="shelf-name">{g.name}</span>
+          <span class="shelf-blurb">{g.blurb}</span>
+          {g.builtIn ? <a class="shelf-meta" href={`/${g.slug}`}>Play {g.name} on its own</a> : <span class="shelf-meta">{g.players} players</span>}
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
