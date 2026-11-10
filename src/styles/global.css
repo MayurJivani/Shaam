@@ -191,7 +191,7 @@ button.card { cursor: pointer; }
 .final .ranks { width: min(640px, 80vw); }
 
 /* ---- phones ------------------------------------------------------------------ */
-.phone { max-width: 520px; margin: 0 auto; padding: max(14px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); display: grid; gap: 16px; align-content: start; min-height: 100dvh; }
+.phone { max-width: 520px; margin: 0 auto; padding: max(14px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; min-height: 100dvh; }
 .me-bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); position: sticky; top: 8px; z-index: 5; backdrop-filter: blur(8px); }
 .me-bar .name { font-weight: 600; margin-right: auto; }
 .me-bar .score { font-family: var(--display); font-weight: 700; font-size: 1.4em; color: var(--gold); }
@@ -223,7 +223,7 @@ button.card { cursor: pointer; }
 .join-form label { display: grid; gap: 6px; color: var(--mist); font-size: .9em; }
 .join-form input { padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0, 0, 0, .3); font-size: 1.15em; color: var(--paper); }
 .code-input { text-transform: uppercase; letter-spacing: .3em; font-family: var(--display); font-weight: 700; text-align: center; }
-.avatar-picker { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.avatar-picker { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
 .avatar-picker button { padding: 2px; border-radius: 50%; border: 2px solid transparent; background: none; cursor: pointer; display: grid; place-items: center; }
 .avatar-picker button.on { border-color: var(--gold); }
 .avatar-picker .avatar { width: 100% !important; height: auto !important; aspect-ratio: 1; }
