@@ -3,6 +3,7 @@ import { param, store, useCountdown, useRelay } from "../../lib/relay.js"
 import { ordinal } from "../party/PartyPhone.jsx"
 import { Avatar, JoinForm, Offline } from "../ui.jsx"
 import { Card } from "./Card.jsx"
+import { usePack } from "../../lib/cardArt.js"
 
 /**
  * A player's phone: only private actions live here (your hand, your clue,
@@ -28,7 +29,10 @@ export default function ReveriePhone() {
         store.set(`shaam.seat.${m.code}`, m.token)
         setForm(false)
         setError("")
-      } else if (m.t === "game") setV(m.view)
+      } else if (m.t === "game") {
+        usePack(m.view.config.pack)
+        setV(m.view)
+      }
       else if (m.t === "error") {
         setError(m.msg)
         if (m.fatal) {

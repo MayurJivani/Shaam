@@ -5,15 +5,21 @@
  * builtIn: lives in this repo at /<slug>, runs on this relay, reports its own result.
  * url:     an existing game on its own host. Launched by link and left unchanged;
  *          the host types the result in afterwards, unless the game reports it (GAMES.md).
+ * join:    that game's player link; {code} is the room code the host types on the
+ *          party TV and {name} the player's party name, so nobody types either twice.
  */
 export const GAMES = [
   { slug: "reverie", name: "Reverie", builtIn: true, players: "3 to 12", blurb: "One clue, a table of strange pictures. Find the storyteller's card." },
-  { slug: "noggin", name: "Noggin", url: "https://noggin.futile.studio", players: "2 to 12", blurb: "A quiz-board game show. Buzz from your phone." },
-  { slug: "chorusify", name: "Chorusify", url: "https://chorusify.com", players: "2 to 8", blurb: "Name the song from the first second of it." },
-  { slug: "croon", name: "Croon", url: "https://croon.futile.studio", players: "any", blurb: "Karaoke lounge. The queue rotates so everybody sings." },
-  { slug: "katze", name: "Katze", url: "https://katze.futile.studio", players: "3 to 6", blurb: "Skull, with Schrodinger's cat. Bluff your boxes." },
-  { slug: "consensus", name: "Consensus", url: "https://consensus.futile.studio", players: "any", blurb: "Read the room, not the answer key." },
-  { slug: "dabber", name: "Dabber", url: "https://dabber.futile.studio", players: "any", blurb: "A different daily game every round." },
+  { slug: "noggin", name: "Noggin", url: "https://noggin.futile.studio/host", join: "https://noggin.futile.studio/play?code={code}&name={name}", players: "2 to 12", blurb: "A quiz-board game show. Buzz from your phone." },
+  { slug: "chorusify", name: "Chorusify", url: "https://chorusify.com/multiplayer", join: "https://chorusify.com/room/{code}?name={name}", players: "2 to 8", blurb: "Name the song from the first second of it." },
+  { slug: "croon", name: "Croon", url: "https://croon.futile.studio/rooms", join: "https://croon.futile.studio/r/{code}?name={name}", players: "any", blurb: "Karaoke lounge. The queue rotates so everybody sings." },
+  { slug: "katze", name: "Katze", url: "https://katze.futile.studio", join: "https://katze.futile.studio/?code={code}&name={name}", players: "3 to 6", blurb: "Skull, with Schrodinger's cat. Bluff your boxes." },
+  { slug: "consensus", name: "Consensus", url: "https://consensus.futile.studio/host", join: "https://consensus.futile.studio/play?code={code}&name={name}", players: "any", blurb: "Read the room, not the answer key." },
+  { slug: "dabber", name: "Dabber", url: "https://dabber.futile.studio", join: "https://dabber.futile.studio/r/{code}?name={name}", players: "any", blurb: "A different daily game every round." },
 ]
 
 export const gameBySlug = (slug) => GAMES.find((g) => g.slug === slug)
+
+/** The player link for an outside game, or its home page while the host has not typed a room code yet. */
+export const joinUrl = (g, code, name) =>
+  code && g.join ? g.join.replace("{code}", encodeURIComponent(code)).replace("{name}", encodeURIComponent(name ?? "")) : g.url

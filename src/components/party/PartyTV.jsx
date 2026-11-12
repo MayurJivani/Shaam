@@ -63,13 +63,23 @@ export default function PartyTV() {
         <NowPlaying party={party} game={current} send={send} />
       ) : (
         <section className="shelf" aria-label="Games">
-          {GAMES.map((g) => (
-            <button key={g.slug} className="shelf-card" onClick={() => send({ t: "party.launch", game: g.slug })}>
-              <span className="shelf-name">{g.name}</span>
-              <span className="shelf-blurb">{g.blurb}</span>
-              <span className="shelf-meta">{g.players} players · {g.builtIn ? "plays here" : "opens its own site"}</span>
-            </button>
-          ))}
+          {GAMES.map((g) => {
+            const lineup = party.games ?? GAMES.map((x) => x.slug)
+            const on = lineup.includes(g.slug)
+            const toggle = () => send({ t: "party.games", games: on ? lineup.filter((s) => s !== g.slug) : [...lineup, g.slug] })
+            return (
+              <div key={g.slug} className={`shelf-slot${on ? "" : " out"}`}>
+                <button className="shelf-card" disabled={!on} onClick={() => send({ t: "party.launch", game: g.slug })}>
+                  <span className="shelf-name">{g.name}</span>
+                  <span className="shelf-blurb">{g.blurb}</span>
+                  <span className="shelf-meta">{g.players} players · {g.builtIn ? "plays here" : "opens its own site"}</span>
+                </button>
+                <button className="lineup-toggle" aria-pressed={on} onClick={toggle} aria-label={`${on ? "Remove" : "Add"} ${g.name} ${on ? "from" : "to"} tonight`}>
+                  {on ? "In tonight" : "Left out"}
+                </button>
+              </div>
+            )
+          })}
         </section>
       )}
 
@@ -101,8 +111,14 @@ function NowPlaying({ party, game, send }) {
     <section className="panel now">
       <h2>{game.name}</h2>
       <p className="scribble">now playing</p>
-      <p className="hint">Phones have a button to open it. Play it as usual, then type in everyone's final score here.</p>
-      <a className="btn" href={game.url} target="_blank" rel="noopener">Open {game.name}</a>
+      <p className="hint">Open it and create a room. Type its room code here and every phone gets a button that joins it under their party name. Afterwards, type in everyone's final score.</p>
+      <div className="row">
+        <a className="btn" href={game.url} target="_blank" rel="noopener">Open {game.name}</a>
+        <form className="row" onSubmit={(e) => { e.preventDefault(); send({ t: "party.room", code: new FormData(e.target).get("code") }) }}>
+          <input name="code" className="code-input room-code" defaultValue={party.current.code ?? ""} placeholder="ROOM" maxLength={16} autoComplete="off" aria-label={`${game.name} room code`} />
+          <button className="btn primary">{party.current.code ? "Update" : "Send to phones"}</button>
+        </form>
+      </div>
       <form className="score-entry" onSubmit={record}>
         {party.players.map((p) => (
           <label key={p.id}>

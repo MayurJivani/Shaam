@@ -193,8 +193,13 @@ export function cardSvg(id) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300"><defs><linearGradient id="sky" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="225"><stop offset="0" stop-color="${p.top}"/><stop offset="1" stop-color="${p.bot}"/></linearGradient><radialGradient id="vig" cx=".5" cy=".45" r=".75"><stop offset=".6" stop-color="${p.ink}" stop-opacity="0"/><stop offset="1" stop-color="${p.ink}" stop-opacity=".7"/></radialGradient><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter></defs><rect width="200" height="300" fill="url(#sky)"/>${stars}${sky}${ground}${accent}${motif}<rect width="200" height="300" fill="url(#vig)"/><rect width="200" height="300" filter="url(#grain)" opacity=".09"/></svg>`
 }
 
-/** The same scene as an <img> source, cached, since a card is drawn on many screens many times. */
+// shortcut: one pack per page, set from the room view; pass the pack per card if a screen ever mixes packs.
+let pack = "dream"
+export const usePack = (slug) => void (pack = slug || "dream")
+
+/** The card's <img> source: a photo from a picture pack, or the drawn scene, cached since it is drawn many times. */
 export function cardSrc(id) {
+  if (pack !== "dream") return `/packs/${pack}/${id}.jpg`
   let src = cache.get(id)
   if (!src) cache.set(id, (src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(cardSvg(id))}`))
   return src

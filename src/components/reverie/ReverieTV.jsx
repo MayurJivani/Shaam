@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { param, setParams, shareOrigin, store, useCountdown, useRelay } from "../../lib/relay.js"
 import { Avatar, Offline, Qr } from "../ui.jsx"
 import { Card } from "./Card.jsx"
+import { usePack } from "../../lib/cardArt.js"
+import { ALL_PACKS } from "../../../shared/packs.js"
 
 const HOW = [
   ["Tell", "The storyteller picks one of their cards and gives a clue: a word, a line, a sound."],
@@ -30,6 +32,7 @@ export default function ReverieTV() {
         store.set(`shaam.room.${m.code}`, m.key)
         setParams({ code: m.code })
       } else if (m.t === "game") {
+        usePack(m.view.config.pack)
         setV(m.view)
         setHost(m.host)
       } else if (m.t === "error") setError(m.msg)
@@ -220,6 +223,12 @@ function Lobby({ v, joinUrl, origin, act, host }) {
       </ol>
       {host && (
         <div className="panel settings">
+          <label>
+            Pictures
+            <select value={c.pack} onChange={(e) => set("pack", e.target.value)}>
+              {ALL_PACKS.map((p) => <option key={p.slug} value={p.slug} title={p.blurb}>{p.name}</option>)}
+            </select>
+          </label>
           {num("maxPlayers", "Seats", [6, 7, 8, 9, 10, 11, 12])}
           {num("rounds", "Rounds", [3, 4, 5, 6, 8, 10, 12])}
           {num("submitSecs", "Card choice (s)", [20, 30, 45, 60])}

@@ -109,15 +109,19 @@ function onMessage(c, msg) {
       send(c.ws, { t: "party.joined", code: party.code, token: r.token, me: { id: r.player.id, name: r.player.name, avatar: r.player.avatar } })
       return pushParty(party.code)
     }
+    case "party.games":
+    case "party.room":
     case "party.launch":
     case "party.record":
     case "party.clear": {
       const party = c.partyHost && P.parties.get(c.party)
       if (!party) return send(c.ws, { t: "error", msg: "Only the party TV can do that" })
       if (msg.t === "party.clear") party.current = null
+      if (msg.t === "party.room" && party.current && !party.current.room) party.current.code = str(msg.code, 16).toUpperCase().replace(/[^A-Z0-9-]/g, "") || null
+      if (msg.t === "party.games") party.games = (Array.isArray(msg.games) ? msg.games : []).map((s) => str(s, 40)).filter(gameBySlug)
       if (msg.t === "party.launch") {
         const g = gameBySlug(str(msg.game))
-        if (!g) return send(c.ws, { t: "error", msg: "Unknown game" })
+        if (!g || !P.inParty(party, g.slug)) return send(c.ws, { t: "error", msg: "That game is not in tonight's line-up" })
         if (g.builtIn) {
           const { code, key } = launchBuiltIn(party, ENGINES[g.slug])
           send(c.ws, { t: "party.launched", game: g.slug, room: code, key })

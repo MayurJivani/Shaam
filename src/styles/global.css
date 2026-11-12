@@ -125,6 +125,11 @@ button, input, select { font: inherit; color: inherit; }
 .shelf-name { font-family: var(--display); font-size: 1.8em; line-height: 1; }
 .shelf-meta { font-size: .85em; font-weight: 700; opacity: .75; }
 .shelf.static .shelf-card { cursor: default; }
+.shelf-slot { display: grid; position: relative; }
+.shelf-slot .shelf-card { height: 100%; }
+.shelf-slot.out .shelf-card { filter: grayscale(1); opacity: .35; cursor: not-allowed; }
+.lineup-toggle { position: absolute; right: -2px; bottom: -8px; z-index: 2; padding: .3em .8em; border-radius: 999px; border: 2px solid var(--on-paper); background: var(--paper); color: var(--on-paper); font: 700 .8em var(--body); cursor: pointer; rotate: -3deg; }
+.lineup-toggle[aria-pressed="true"] { background: var(--on-paper); color: var(--paper); }
 
 /* ---- TV, shared ----------------------------------------------------------- */
 .tv { height: 100dvh; padding: 2.4vh 2.8vw; display: grid; gap: 2.6vh; }
@@ -139,6 +144,7 @@ button, input, select { font: inherit; color: inherit; }
 .score-entry label { display: flex; align-items: center; gap: 8px; font-weight: 700; }
 .score-entry input { width: 6em; margin-left: auto; padding: 6px 10px; border-radius: 10px; border: 2px solid var(--on-paper); background: #fff; color: var(--on-paper); font-variant-numeric: tabular-nums; }
 .score-entry .row { grid-column: 1 / -1; }
+.room-code { width: 8em; padding: 8px 12px; border-radius: 10px; border: 2px solid var(--on-paper); background: #fff; color: var(--on-paper); font-size: 1.2em; }
 .board { grid-column: 1 / -1; }
 .board h2 { font-size: 2em; display: flex; align-items: baseline; gap: .6em; }
 .board h2 .hint { font-family: var(--body); font-size: .45em; font-weight: 700; }
@@ -311,12 +317,13 @@ button.card { cursor: pointer; }
 }
 [data-world="street"] .join-panel .scribble { margin-top: .5em; }
 /* The shelf: every game its own coloured slap. */
-[data-world="street"] .shelf-card { --tilt: -1.5deg; rotate: var(--tilt); }
-[data-world="street"] .shelf-card:nth-child(5n + 1) { background: var(--hot); color: #fff; --tilt: -2deg; }
-[data-world="street"] .shelf-card:nth-child(5n + 2) { background: var(--accent); color: var(--on-accent); --tilt: 1.5deg; }
-[data-world="street"] .shelf-card:nth-child(5n + 3) { background: var(--pink); color: #160a10; --tilt: -.8deg; }
-[data-world="street"] .shelf-card:nth-child(5n + 4) { background: var(--cobalt); color: #fff; --tilt: 2.2deg; }
-[data-world="street"] .shelf-card:nth-child(5n + 5) { background: var(--yellow); color: #121212; --tilt: -1.8deg; }
+/* Colours sit on the shelf's children as variables, so a card wrapped in a slot (TV) or bare (landing) gets them. */
+[data-world="street"] .shelf-card { rotate: var(--tilt); background: var(--slap); color: var(--slap-ink); }
+[data-world="street"] .shelf > :nth-child(5n + 1) { --slap: var(--hot); --slap-ink: #fff; --tilt: -2deg; }
+[data-world="street"] .shelf > :nth-child(5n + 2) { --slap: var(--accent); --slap-ink: var(--on-accent); --tilt: 1.5deg; }
+[data-world="street"] .shelf > :nth-child(5n + 3) { --slap: var(--pink); --slap-ink: #160a10; --tilt: -.8deg; }
+[data-world="street"] .shelf > :nth-child(5n + 4) { --slap: var(--cobalt); --slap-ink: #fff; --tilt: 2.2deg; }
+[data-world="street"] .shelf > :nth-child(5n + 5) { --slap: var(--yellow); --slap-ink: #121212; --tilt: -1.8deg; }
 [data-world="street"] .shelf-card :is(.shelf-blurb, .shelf-meta) { color: inherit; }
 [data-world="street"] .shelf-name { font-weight: 400; text-transform: uppercase; font-size: 2.1em; }
 [data-world="street"] button.shelf-card:hover { rotate: 0deg; transform: translateY(-6px) scale(1.03); box-shadow: 0 0 0 7px var(--die), 0 22px 34px rgba(0, 0, 0, .6); }

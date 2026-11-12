@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { gameBySlug } from "../../../shared/games.js"
+import { GAMES, gameBySlug, joinUrl } from "../../../shared/games.js"
 import { param, setParams, store, useRelay } from "../../lib/relay.js"
 import { Avatar, JoinForm, Offline } from "../ui.jsx"
 
@@ -79,13 +79,20 @@ export default function PartyPhone() {
       {current && !current.builtIn ? (
         <section className="phone-card">
           <h2>Next up: {current.name}</h2>
-          <p>Open it, play along, then come back here. The host records the result.</p>
-          <a className="btn primary big" href={party.current.url} target="_blank" rel="noopener">Open {current.name}</a>
+          {party.current.code ? (
+            <>
+              <p>One tap and you're in as {me.name}. Come back here after; the host records the result.</p>
+              <a className="btn primary big" href={joinUrl(current, party.current.code, me.name)} target="_blank" rel="noopener">Join {current.name}</a>
+            </>
+          ) : (
+            <p>Waiting for the host to open a {current.name} room. Your button appears here.</p>
+          )}
         </section>
       ) : (
         <section className="phone-card">
           <h2>You're in.</h2>
           <p>Look up at the TV. When the host picks a game, this phone takes you there.</p>
+          <p className="hint">Tonight: {(party.games ?? GAMES.map((g) => g.slug)).map((s) => gameBySlug(s)?.name).filter(Boolean).join(", ") || "nothing picked yet"}</p>
         </section>
       )}
       {party.results.length > 0 && rank >= 0 && (

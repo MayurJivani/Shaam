@@ -9,6 +9,7 @@
  * Implements the built-in game contract in GAMES.md.
  */
 import { createHash, randomBytes, randomInt } from "node:crypto"
+import { packBySlug } from "../../shared/packs.js"
 
 export const slug = "reverie"
 export const DECK_SIZE = 240 // must match src/lib/cardArt.js
@@ -58,6 +59,7 @@ export function cleanConfig(c = {}) {
   const out = {}
   for (const k of Object.keys(LIMITS)) out[k] = clamp(c[k], LIMITS[k], DEFAULTS[k])
   out.customClues = c.customClues === undefined ? DEFAULTS.customClues : c.customClues === true
+  out.pack = packBySlug(c.pack).slug
   return out
 }
 
@@ -143,7 +145,7 @@ function arm(room, now, secs) {
 
 function start(room, now) {
   if (room.players.filter((p) => p.connected).length < MIN_PLAYERS) return `Need at least ${MIN_PLAYERS} players`
-  room.deck = shuffle(range(DECK_SIZE))
+  room.deck = shuffle(range(packBySlug(room.config.pack).count))
   room.discard = []
   for (const p of room.players) {
     p.score = 0

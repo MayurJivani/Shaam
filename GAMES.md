@@ -20,11 +20,20 @@ slug not listed there, and the party TV draws its shelf from it.
 ```js
 { slug: "mygame", name: "My Game", builtIn: true, players: "3 to 8", blurb: "One line a guest can read from the sofa." },
 // or, for an existing game on its own host:
-{ slug: "mygame", name: "My Game", url: "https://mygame.futile.studio", players: "any", blurb: "..." },
+{ slug: "mygame", name: "My Game", url: "https://mygame.futile.studio/host", join: "https://mygame.futile.studio/play?code={code}&name={name}", players: "any", blurb: "..." },
 ```
 
-For an outside game that is the whole job. Launch it from the party TV, play
-it as usual, then type everyone's final score into the form the TV shows.
+For an outside game that is the whole job. Launch it from the party TV, open
+its room, and type the room code into the TV. Every phone then gets a button to
+the `join` link with `{code}` and the player's party name filled in.
+
+To make that one tap, the game's player page should join on its own when the
+URL carries both the code and `?name=`: prefill the name, submit once, and fall
+back to the normal form if the join fails. Without `?name=` it behaves as before.
+Noggin, Chorusify, Croon, Katze, Consensus and Dabber all do this.
+
+After the game, type everyone's final score into the form the TV shows. The host
+can leave any game out of the night with its "In tonight" toggle on the shelf.
 
 ## Built-in game: the engine contract
 

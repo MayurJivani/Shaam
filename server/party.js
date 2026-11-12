@@ -90,9 +90,13 @@ export function leaderboard(party) {
   return [...rows.values()].sort((a, b) => b.points - a.points || b.wins - a.wins || a.name.localeCompare(b.name))
 }
 
+/** The host's line-up for the night; a party saved before line-ups existed (no list) includes every game. */
+export const inParty = (party, slug) => !party.games || party.games.includes(slug)
+
 export function publicParty(party) {
   return {
     code: party.code,
+    games: party.games ?? null,
     players: party.players.map(({ id, name, avatar }) => ({ id, name, avatar })),
     current: party.current,
     results: party.results,
