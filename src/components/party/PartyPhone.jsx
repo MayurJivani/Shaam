@@ -78,8 +78,7 @@ export default function PartyPhone() {
       </header>
       {current && !current.builtIn ? (
         <section className="phone-card">
-          <p className="eyebrow">Next up</p>
-          <h2>{current.name}</h2>
+          <h2>Next up: {current.name}</h2>
           <p>Open it, play along, then come back here. The host records the result.</p>
           <a className="btn primary big" href={party.current.url} target="_blank" rel="noopener">Open {current.name}</a>
         </section>

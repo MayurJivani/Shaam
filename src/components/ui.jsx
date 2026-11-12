@@ -32,7 +32,7 @@ export function AvatarPicker({ value, onChange }) {
 export function Qr({ url, size = 180 }) {
   const ref = useRef(null)
   useEffect(() => {
-    if (url && ref.current) QRCode.toCanvas(ref.current, url, { width: size, margin: 1, color: { dark: "#140f2b", light: "#f4e9d0" } }).catch(() => {})
+    if (url && ref.current) QRCode.toCanvas(ref.current, url, { width: size, margin: 1, color: { dark: "#111111", light: "#ffffff" } }).catch(() => {})
   }, [url, size])
   return url ? <canvas ref={ref} className="qr" aria-label={`QR code for ${url}`} /> : null
 }

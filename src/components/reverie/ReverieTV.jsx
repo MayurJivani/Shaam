@@ -168,8 +168,8 @@ function Final({ players, party }) {
   const ranked = [...players].sort((a, b) => b.score - a.score)
   return (
     <div className="moment final">
-      <p className="eyebrow">The dream is over</p>
       <h2 className="display">{ranked[0]?.name} tells the best stories</h2>
+      <p className="hint">The dream is over.</p>
       <ol className="ranks">
         {ranked.map((p, i) => (
           <li key={p.id} className={i === 0 ? "lead" : ""}>
@@ -204,9 +204,8 @@ function Lobby({ v, joinUrl, origin, act, host }) {
       <div className="panel join-panel">
         <Qr url={origin && joinUrl} size={210} />
         <div>
-          <p className="eyebrow">Scan to join, or go to</p>
-          <p className="hint">{joinUrl.replace(/^https?:\/\//, "")}</p>
           <p className="big-code">{v.code}</p>
+          <p className="hint">Scan, or go to {joinUrl.replace(/^https?:\/\//, "")}</p>
           <p className="hint">{connected} of {c.maxPlayers} seats taken</p>
         </div>
       </div>

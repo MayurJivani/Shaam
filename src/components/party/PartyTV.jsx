@@ -47,9 +47,9 @@ export default function PartyTV() {
       <section className="panel join-panel">
         <Qr url={origin && joinUrl} size={200} />
         <div>
-          <p className="eyebrow">Join on your phone</p>
           <p className="big-code">{party.code}</p>
-          <p className="hint">{joinUrl.replace(/^https?:\/\//, "")}</p>
+          <p className="hint">Scan, or go to {joinUrl.replace(/^https?:\/\//, "")}</p>
+          <p className="scribble">join on your phone!</p>
         </div>
         <ul className="chips">
           {party.players.map((p) => (
@@ -84,8 +84,8 @@ function NowPlaying({ party, game, send }) {
   if (game.builtIn) {
     return (
       <section className="panel now">
-        <p className="eyebrow">Now playing</p>
         <h2>{game.name}</h2>
+        <p className="scribble">now playing</p>
         <div className="row">
           <a className="btn primary" href={`/${game.slug}?code=${party.current.room}&party=${party.code}`}>Back to {game.name}</a>
           <button className="btn ghost" onClick={() => send({ t: "party.clear" })}>Abandon it</button>
@@ -99,8 +99,8 @@ function NowPlaying({ party, game, send }) {
   }
   return (
     <section className="panel now">
-      <p className="eyebrow">Now playing</p>
       <h2>{game.name}</h2>
+      <p className="scribble">now playing</p>
       <p className="hint">Phones have a button to open it. Play it as usual, then type in everyone's final score here.</p>
       <a className="btn" href={game.url} target="_blank" rel="noopener">Open {game.name}</a>
       <form className="score-entry" onSubmit={record}>
@@ -123,7 +123,7 @@ function Leaderboard({ party }) {
   if (!party.results.length) return null
   return (
     <section className="panel board">
-      <p className="eyebrow">The night so far · {party.results.length} game{party.results.length > 1 ? "s" : ""}</p>
+      <h2>The night so far <span className="hint">{party.results.length} game{party.results.length > 1 ? "s" : ""}</span></h2>
       <ol className="ranks">
         {party.leaderboard.map((r) => (
           <li key={r.key} className={r.points === party.leaderboard[0].points ? "lead" : ""}>
