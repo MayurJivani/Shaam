@@ -18,7 +18,7 @@ re-joining, and ends the night knowing who did best overall.
 
 ## Positioning
 A neighbouring party game is one game. Shaam is the shelf and the scoreboard for many, including
-games that live on their own sites (Noggin, Chorusify, Bleep, Haggle, Croon, Katze, Consensus, Dabber) and stay
+games that live on their own sites (Noggin, Chorusify, Bleep, Haggle, Pressure, Croon, Katze, Consensus, Dabber) and stay
 unchanged; their results are typed in on the party TV. Ranking is by placement, so games scored on
 different scales count the same.
 

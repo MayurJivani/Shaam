@@ -30,7 +30,7 @@ Every game is listed on the front page and starts with one tap, party or not.
 
 - **Undercover** is a hidden-word bluffing game for 3 to 20 players, played on
   one phone passed round the room.
-- **Noggin, Chorusify, Bleep, Haggle, Croon, Katze, Consensus and Dabber** launch from the same
+- **Noggin, Chorusify, Bleep, Haggle, Pressure, Croon, Katze, Consensus and Dabber** launch from the same
   shelf and play exactly as they always have. Their result is typed in on the
   party TV.
 
