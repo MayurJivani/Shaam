@@ -64,3 +64,9 @@ test("caught Mr White wins alone with the right word, game goes on with a wrong 
   U.guessWord(b, "definitely not it")
   assert.equal(b.phase, "describe")
 })
+
+test("word pairs: two different words, no word used twice", () => {
+  const all = U.PAIRS.flat().map((w) => w.toLowerCase())
+  assert.ok(U.PAIRS.every(([a, b]) => a && b && a !== b))
+  assert.deepEqual(all.filter((w, i) => all.indexOf(w) !== i), [])
+})

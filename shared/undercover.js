@@ -15,18 +15,58 @@ export const ROLE = { civilian: "Civilian", undercover: "Undercover", mrwhite: "
 
 // [one word, its close cousin]; which side gets which is flipped at random each game.
 export const PAIRS = [
-  ["Coffee", "Tea"], ["Cat", "Dog"], ["Beach", "Pool"], ["Pizza", "Burger"], ["Guitar", "Violin"],
-  ["Train", "Bus"], ["Moon", "Sun"], ["Apple", "Pear"], ["Lion", "Tiger"], ["Doctor", "Nurse"],
-  ["Football", "Rugby"], ["Wine", "Beer"], ["Piano", "Keyboard"], ["Snow", "Rain"], ["Castle", "Palace"],
-  ["Butter", "Cheese"], ["Shark", "Dolphin"], ["Cinema", "Theatre"], ["Wedding", "Birthday"], ["Pen", "Pencil"],
-  ["Bicycle", "Motorbike"], ["Library", "Bookshop"], ["Mountain", "Hill"], ["Honey", "Jam"], ["Spoon", "Fork"],
-  ["Pirate", "Viking"], ["Vampire", "Zombie"], ["Rose", "Tulip"], ["Chess", "Draughts"], ["Lemon", "Lime"],
-  ["Ketchup", "Mustard"], ["Hotel", "Hostel"], ["Owl", "Eagle"], ["Sofa", "Bed"], ["Jeans", "Leggings"],
-  ["Rocket", "Plane"], ["Ice cream", "Frozen yogurt"], ["Teacher", "Professor"], ["River", "Lake"], ["Clock", "Watch"],
-  ["Instagram", "TikTok"], ["Netflix", "YouTube"], ["Breakfast", "Brunch"], ["Socks", "Gloves"], ["Bee", "Wasp"],
-  ["Volcano", "Earthquake"], ["Pancake", "Waffle"], ["Taxi", "Uber"], ["Ghost", "Witch"], ["Camera", "Phone"],
-  ["Desert", "Jungle"], ["Popcorn", "Crisps"], ["King", "President"], ["Umbrella", "Raincoat"], ["Cake", "Pie"],
-  ["Gym", "Yoga"], ["Frog", "Toad"], ["Knife", "Scissors"], ["Christmas", "New Year"], ["Mirror", "Window"],
+  // food and drink
+  ["Coffee", "Tea"], ["Pizza", "Burger"], ["Apple", "Pear"], ["Butter", "Cheese"], ["Honey", "Jam"],
+  ["Lemon", "Lime"], ["Ketchup", "Mustard"], ["Ice cream", "Frozen yogurt"], ["Breakfast", "Brunch"], ["Pancake", "Waffle"],
+  ["Popcorn", "Crisps"], ["Cake", "Pie"], ["Wine", "Beer"], ["Sushi", "Sashimi"], ["Croissant", "Bagel"],
+  ["Noodles", "Spaghetti"], ["Curry", "Stew"], ["Taco", "Burrito"], ["Muffin", "Cupcake"], ["Orange", "Mandarin"],
+  ["Smoothie", "Milkshake"], ["Garlic", "Onion"], ["Salt", "Pepper"], ["Biryani", "Pulao"], ["Samosa", "Spring roll"],
+  ["Hummus", "Guacamole"], ["Chocolate", "Caramel"], ["Strawberry", "Raspberry"], ["Cucumber", "Courgette"], ["Cola", "Lemonade"],
+  // animals
+  ["Cat", "Dog"], ["Lion", "Tiger"], ["Shark", "Dolphin"], ["Owl", "Eagle"], ["Bee", "Wasp"],
+  ["Frog", "Toad"], ["Horse", "Donkey"], ["Rabbit", "Hamster"], ["Wolf", "Fox"], ["Penguin", "Puffin"],
+  ["Butterfly", "Moth"], ["Octopus", "Squid"], ["Cheetah", "Leopard"], ["Camel", "Llama"], ["Seal", "Walrus"],
+  ["Crow", "Raven"], ["Tortoise", "Turtle"], ["Mouse", "Rat"], ["Goat", "Sheep"], ["Parrot", "Peacock"],
+  // places
+  ["Beach", "Pool"], ["Castle", "Palace"], ["Library", "Bookshop"], ["Mountain", "Hill"], ["Hotel", "Hostel"],
+  ["River", "Lake"], ["Desert", "Jungle"], ["Paris", "Rome"], ["London", "Dublin"], ["Mumbai", "Delhi"],
+  ["Tokyo", "Seoul"], ["Airport", "Train station"], ["Hospital", "Pharmacy"], ["Supermarket", "Market"], ["Museum", "Gallery"],
+  ["Island", "Peninsula"], ["Zoo", "Aquarium"], ["Church", "Temple"], ["Garden", "Park"], ["Berlin", "Munich"],
+  // sports and games
+  ["Football", "Rugby"], ["Chess", "Draughts"], ["Gym", "Yoga"], ["Tennis", "Badminton"], ["Cricket", "Baseball"],
+  ["Basketball", "Volleyball"], ["Boxing", "Wrestling"], ["Skiing", "Snowboarding"], ["Golf", "Mini golf"], ["Swimming", "Diving"],
+  ["Marathon", "Sprint"], ["Surfing", "Sailing"], ["Darts", "Archery"], ["Poker", "Blackjack"], ["Bowling", "Billiards"],
+  ["Olympics", "World Cup"], ["Cycling", "Running"], ["Karate", "Judo"], ["Hockey", "Lacrosse"], ["Sudoku", "Crossword"],
+  // music
+  ["Guitar", "Violin"], ["Piano", "Keyboard"], ["Drums", "Tambourine"], ["Trumpet", "Saxophone"], ["Concert", "Festival"],
+  ["Rap", "Rock"], ["Karaoke", "Open mic"], ["DJ", "MC"], ["Opera", "Musical"], ["Headphones", "Speaker"],
+  ["Choir", "Band"], ["Vinyl", "Cassette"], ["Lullaby", "Anthem"], ["Ukulele", "Banjo"], ["Bollywood", "K-pop"],
+  // film and TV
+  ["Cinema", "Theatre"], ["Vampire", "Zombie"], ["Ghost", "Witch"], ["Pirate", "Viking"], ["Netflix", "YouTube"],
+  ["Superman", "Batman"], ["Harry Potter", "Lord of the Rings"], ["Star Wars", "Star Trek"], ["Cartoon", "Anime"], ["Sitcom", "Soap opera"],
+  ["Horror", "Thriller"], ["Documentary", "Biopic"], ["Sequel", "Remake"], ["Director", "Producer"], ["Oscar", "Grammy"],
+  ["Mermaid", "Fairy"], ["Dragon", "Dinosaur"], ["Robot", "Alien"], ["Ninja", "Samurai"], ["Detective", "Spy"],
+  // pop culture and everyday life
+  ["Wedding", "Birthday"], ["Christmas", "New Year"], ["Halloween", "Carnival"], ["Diwali", "Holi"], ["Instagram", "TikTok"],
+  ["Selfie", "Portrait"], ["Influencer", "Celebrity"], ["Meme", "Emoji"], ["Podcast", "Radio"], ["Tattoo", "Piercing"],
+  ["King", "President"], ["Doctor", "Nurse"], ["Teacher", "Professor"], ["Chef", "Waiter"], ["Pilot", "Astronaut"],
+  ["Police officer", "Firefighter"], ["Lawyer", "Judge"], ["Barber", "Hairdresser"], ["Magician", "Clown"], ["Santa", "Easter Bunny"],
+  // things and tech
+  ["Pen", "Pencil"], ["Spoon", "Fork"], ["Knife", "Scissors"], ["Clock", "Watch"], ["Socks", "Gloves"],
+  ["Sofa", "Bed"], ["Jeans", "Leggings"], ["Umbrella", "Raincoat"], ["Mirror", "Window"], ["Camera", "Phone"],
+  ["Laptop", "Tablet"], ["iPhone", "Android"], ["WhatsApp", "Telegram"], ["Google", "Wikipedia"], ["Email", "Text message"],
+  ["Wi-Fi", "Bluetooth"], ["Password", "PIN"], ["Touchscreen", "Trackpad"], ["Printer", "Scanner"], ["Alexa", "Siri"],
+  ["PlayStation", "Xbox"], ["Minecraft", "Lego"], ["Fridge", "Freezer"], ["Kettle", "Toaster"], ["Candle", "Torch"],
+  // getting around
+  ["Train", "Bus"], ["Bicycle", "Motorbike"], ["Rocket", "Plane"], ["Taxi", "Uber"], ["Car", "Van"],
+  ["Ship", "Submarine"], ["Helicopter", "Drone"], ["Tram", "Metro"], ["Scooter", "Skateboard"], ["Passport", "Visa"],
+  // nature and weather
+  ["Moon", "Sun"], ["Snow", "Rain"], ["Volcano", "Earthquake"], ["Rose", "Tulip"], ["Storm", "Hurricane"],
+  ["Fog", "Smoke"], ["Star", "Planet"], ["Rainbow", "Sunset"], ["Tree", "Bush"], ["Sand", "Dust"],
+  // ideas and feelings
+  ["Love", "Crush"], ["Fear", "Anxiety"], ["Dream", "Nightmare"], ["Luck", "Fate"], ["Lie", "Secret"],
+  ["Hope", "Wish"], ["Boredom", "Laziness"], ["Pride", "Ego"], ["Memory", "Nostalgia"], ["Friend", "Neighbour"],
+  ["Gossip", "Rumour"], ["Promise", "Contract"], ["Holiday", "Weekend"], ["Morning", "Evening"], ["Silence", "Whisper"],
 ]
 
 export function shuffle(a) {
