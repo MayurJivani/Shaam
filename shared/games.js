@@ -9,7 +9,7 @@
  *          party TV and {name} the player's party name, so nobody types either twice.
  */
 export const GAMES = [
-  { slug: "undercover", name: "Undercover", builtIn: true, players: "3 to 20", blurb: "Everyone has the same word. Almost. Find the Undercovers and Mr White." },
+  { slug: "undercover", name: "Undercover", url: "/undercover", players: "3 to 20", blurb: "Everyone has the same word. Almost. One phone, passed round. Find the Undercovers and Mr White." },
   { slug: "noggin", name: "Noggin", url: "https://noggin.futile.studio/host", join: "https://noggin.futile.studio/play?code={code}&name={name}", players: "2 to 12", blurb: "A quiz-board game show. Buzz from your phone." },
   { slug: "chorusify", name: "Chorusify", url: "https://chorusify.com/multiplayer", join: "https://chorusify.com/room/{code}?name={name}", players: "2 to 8", blurb: "Name the song from the first second of it." },
   { slug: "bleep", name: "Bleep", url: "https://bleep.futile.studio", join: "https://bleep.futile.studio/{code}", players: "4 to 12", blurb: "Two channels, secret keywords. Send clues your team gets and the others don't." },

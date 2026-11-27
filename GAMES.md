@@ -10,7 +10,7 @@ party in one of two ways, and neither changes how the game itself plays.
 | Runs on | this relay, `server/games/<slug>.js` | its own server |
 | Players arrive | phones follow the party TV in automatically | phones get an "Open <game>" button |
 | Result reaches the party | automatically at game over | typed in on the party TV, or POSTed (below) |
-| Example | Undercover | Noggin, Chorusify, Croon |
+| Example | none right now | Noggin, Chorusify, Undercover |
 
 ## Step 1, always: the shelf
 
@@ -40,7 +40,7 @@ can leave any game out of the night with its "In tonight" toggle on the shelf.
 `server/games/<slug>.js` is plain functions over one room object: no sockets,
 no timers, no I/O. The relay owns connections and the clock, calls these, and
 sends each screen its `view`. Register the module in `ENGINES` in
-`server/index.js`. Undercover (`server/games/undercover.js`) is the reference.
+`server/index.js`. Reverie, removed but still in history (`git show 6590c93:server/games/reverie.js`), is the reference.
 
 ```js
 export const slug = "mygame"
@@ -68,11 +68,11 @@ Rules every engine keeps:
 - **`standings` once.** The relay reports it to the party the first time it is
   non-null and never again. Scores can be on any scale: the party ranks by
   placement (one point per player beaten), so 900 Noggin points and 30
-  Undercover points weigh the same.
+  Reverie points weigh the same.
 
 Pages go in `src/pages/<slug>/index.astro` (TV) and `src/pages/<slug>/play.astro`
 (phone). The TV sends `game.host` with `code`, `key`, `party` and `partyKey`
-(from the URL and localStorage, see `UndercoverTV.jsx`). The phone sends `game.join`
+(from the URL and localStorage, see `ReverieTV.jsx` at 6590c93). The phone sends `game.join`
 with its seat token and the party token in `shaam.me`, so a party guest
 never types their name twice. When `view.phase` is over and `view.party` is
 set, send the phone back to `/join?code=<party>`; that is how it follows the

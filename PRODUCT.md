@@ -27,7 +27,8 @@ different scales count the same.
   remote; it shows the join QR code and code, guests, the game shelf, and the leaderboard.
 - Phones: portrait, private, used briefly (join, wait, follow into the next game). People should be
   looking at each other and the TV, not their phones.
-- Built-in games (Undercover today) run at `/<slug>` on the same relay; phones follow the TV in and back.
+- Built-in games run at `/<slug>` on the same relay; phones follow the TV in and back. None ship today.
+- Undercover is played on one phone passed round the room, at `/undercover`. Its result is typed in on the party TV.
 
 ## Capabilities and Constraints
 - Party pages: `/` (landing), `/tv` (party TV), `/join` (party phone), 404.

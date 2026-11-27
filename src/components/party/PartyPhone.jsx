@@ -79,7 +79,9 @@ export default function PartyPhone() {
       {current && !current.builtIn ? (
         <section className="phone-card">
           <h2>Next up: {current.name}</h2>
-          {party.current.code ? (
+          {!current.join ? (
+            <p>This one is played on the host's phone, passed round. Look up and wait for it to reach you.</p>
+          ) : party.current.code ? (
             <>
               <p>One tap and you're in as {me.name}. Come back here after; the host records the result.</p>
               <a className="btn primary big" href={joinUrl(current, party.current.code, me.name)} target="_blank" rel="noopener">Join {current.name}</a>

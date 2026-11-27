@@ -10,10 +10,10 @@ import { GAMES } from "../../shared/games.js"
     <ul class="shelf">
       {GAMES.map((g) => (
         <li>
-          <a class="shelf-card" href={g.builtIn ? `/${g.slug}` : g.url} target={g.builtIn ? undefined : "_blank"} rel={g.builtIn ? undefined : "noopener"}>
+          <a class="shelf-card" href={g.builtIn ? `/${g.slug}` : g.url} {...(g.url?.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>
             <span class="shelf-name">{g.name}</span>
             <span class="shelf-blurb">{g.blurb}</span>
-            <span class="shelf-meta">{g.players} players · {g.builtIn ? "plays here" : "opens its own site"}</span>
+            <span class="shelf-meta">{g.players} players · {g.url?.startsWith("http") ? "opens its own site" : "plays here"}</span>
           </a>
         </li>
       ))}

@@ -28,7 +28,8 @@ rejoining, and ends the night knowing who did best overall.
 
 Every game is listed on the front page and starts with one tap, party or not.
 
-- **Undercover** is built in: a hidden-word bluffing game for 3 to 20 players.
+- **Undercover** is a hidden-word bluffing game for 3 to 20 players, played on
+  one phone passed round the room.
 - **Noggin, Chorusify, Bleep, Haggle, Croon, Katze, Consensus and Dabber** launch from the same
   shelf and play exactly as they always have. Their result is typed in on the
   party TV.
@@ -41,8 +42,7 @@ Adding a game, built-in or outside: [GAMES.md](GAMES.md).
 2. Guests scan it on their phones (`/join`) and pick a name once.
 3. The host picks a game off the shelf. Games can be switched off for the night
    with the "In tonight" toggle.
-4. For Undercover, phones follow the TV into the game, and the result goes to
-   the party on its own.
+4. For Undercover, the host plays it on one phone and types the scores in after.
 5. For an outside game, the host opens its room and types the room code into
    the party TV. Every phone gets an "Open <game>" button with the code and
    name filled in, so it is one tap. Afterwards the host types the scores into
@@ -56,10 +56,11 @@ points and 6 Undercover points weigh the same.
 - Most players are Civilians and share a secret word. The Undercovers get a
   close cousin of it (Coffee and Tea), and Mr White gets nothing. Undercovers
   are not told they are undercover.
-- Each round everyone says one clue out loud, in an order the TV shows (Mr
-  White never goes first). Then everyone votes on their phone; the player out
-  is revealed. A tie re-votes between the tied, a second tie sends nobody out.
-- A caught Mr White gets one guess at the Civilians' word and wins alone if right.
+- One phone does everything. It goes round so each player sees their word in
+  private, then shows the speaking order (Mr White never goes first). Everyone
+  says one clue out loud, the room agrees who to vote out, and the phone
+  reveals what they were.
+- A caught Mr White types one guess at the Civilians' word and wins alone if right.
 - Civilians win by clearing every impostor; impostors win once one Civilian is
   left. Points: Civilians 2 each, Undercovers 10, a surviving Mr White 6.
 - The host picks how many Undercovers and Mr Whites, and can play again with
@@ -79,13 +80,13 @@ flowchart LR
   TV["TV /tv"] <-- WebSocket --> Relay
   Phones["Phones /join"] <-- WebSocket --> Relay
   Relay["server/index.js"] --> Party["server/party.js<br/>parties, leaderboard"]
-  Relay --> Undercover["server/games/undercover.js<br/>rules, scoring"]
   Outside["Outside games"] -. "POST /api/parties/:code/results" .-> Relay
 ```
 
-The relay owns the connections and the clock. A built-in game is plain
-functions over a room object, and every screen gets a redacted view (words, roles and
-votes stay private until the reveal). The full engine contract, and the optional
+The relay owns the connections and the clock. A built-in game would be plain
+functions over a room object, with every screen getting a redacted view.
+Undercover needs no server: its rules are plain functions in
+`shared/undercover.js`, run in the browser and saved to localStorage. The full engine contract, and the optional
 results API for outside games, are in [GAMES.md](GAMES.md).
 
 ## Running it locally
@@ -119,9 +120,9 @@ GHCR. `deploy/` holds the compose file and Caddy block I use to host it.
 | --- | --- |
 | `server/index.js` | relay: static files, `/api`, the WebSocket |
 | `server/party.js` | parties, the cross-game leaderboard, JSON persistence in `data/` |
-| `server/games/undercover.js` | Undercover's rules, word pairs, scoring and redacted views |
+| `shared/undercover.js` | Undercover's rules, word pairs and scoring |
 | `shared/games.js` | the shelf |
-| `src/pages/` | `/`, `/tv`, `/join`, `/undercover` (TV) and `/undercover/play` (phone) |
+| `src/pages/` | `/`, `/tv`, `/join`, `/undercover` (one phone) |
 
 ## Licence
 

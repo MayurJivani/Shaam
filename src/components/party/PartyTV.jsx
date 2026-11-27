@@ -72,7 +72,7 @@ export default function PartyTV() {
                 <button className="shelf-card" disabled={!on} onClick={() => send({ t: "party.launch", game: g.slug })}>
                   <span className="shelf-name">{g.name}</span>
                   <span className="shelf-blurb">{g.blurb}</span>
-                  <span className="shelf-meta">{g.players} players · {g.builtIn ? "plays here" : "opens its own site"}</span>
+                  <span className="shelf-meta">{g.players} players · {g.url?.startsWith("http") ? "opens its own site" : "plays here"}</span>
                 </button>
                 <button className="lineup-toggle" aria-pressed={on} onClick={toggle} aria-label={`${on ? "Remove" : "Add"} ${g.name} ${on ? "from" : "to"} tonight`}>
                   {on ? "In tonight" : "Left out"}
@@ -111,13 +111,15 @@ function NowPlaying({ party, game, send }) {
     <section className="panel now">
       <h2>{game.name}</h2>
       <p className="scribble">now playing</p>
-      <p className="hint">Open it and create a room. Type its room code here and every phone gets a button that joins it under their party name. Afterwards, type in everyone's final score.</p>
+      <p className="hint">{game.join ? "Open it and create a room. Type its room code here and every phone gets a button that joins it under their party name. Afterwards, type in everyone's final score." : "Open it on one phone and pass it round. Afterwards, type in everyone's score."}</p>
       <div className="row">
         <a className="btn" href={game.url} target="_blank" rel="noopener">Open {game.name}</a>
-        <form className="row" onSubmit={(e) => { e.preventDefault(); send({ t: "party.room", code: new FormData(e.target).get("code") }) }}>
-          <input name="code" className="code-input room-code" defaultValue={party.current.code ?? ""} placeholder="ROOM" maxLength={16} autoComplete="off" aria-label={`${game.name} room code`} />
-          <button className="btn primary">{party.current.code ? "Update" : "Send to phones"}</button>
-        </form>
+        {game.join && (
+          <form className="row" onSubmit={(e) => { e.preventDefault(); send({ t: "party.room", code: new FormData(e.target).get("code") }) }}>
+            <input name="code" className="code-input room-code" defaultValue={party.current.code ?? ""} placeholder="ROOM" maxLength={16} autoComplete="off" aria-label={`${game.name} room code`} />
+            <button className="btn primary">{party.current.code ? "Update" : "Send to phones"}</button>
+          </form>
+        )}
       </div>
       <form className="score-entry" onSubmit={record}>
         {party.players.map((p) => (

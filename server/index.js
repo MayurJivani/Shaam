@@ -17,14 +17,13 @@ import { fileURLToPath } from "node:url"
 import { WebSocketServer } from "ws"
 
 import { gameBySlug } from "../shared/games.js"
-import * as undercover from "./games/undercover.js"
 import * as P from "./party.js"
 
 const PORT = Number(process.env.SHAAM_PORT ?? 4401)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const DIST = path.resolve(process.env.SHAAM_DIST_DIR ?? path.join(ROOT, "dist"))
 const ROOM_IDLE_MS = 30 * 60_000
-const ENGINES = { undercover } // built-in games by slug; each follows the contract in GAMES.md
+const ENGINES = {} // built-in games by slug; each follows the contract in GAMES.md
 
 P.loadParties(path.resolve(process.env.SHAAM_DATA_DIR ?? path.join(ROOT, "data")))
 

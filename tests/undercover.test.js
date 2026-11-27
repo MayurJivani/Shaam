@@ -1,90 +1,66 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
-import * as U from "../server/games/undercover.js"
+import * as U from "../shared/undercover.js"
 
-/** A room of n players with roles dealt in seat order: the given roles first, Civilians after. */
-function room(n, roles, config = {}) {
-  const r = U.createRoom({ code: "TEST", config })
-  const ids = Array.from({ length: n }, (_, i) => U.join(r, { name: `P${i}`, avatar: i }).player.id)
-  assert.equal(U.deal(r, (a) => [...roles, ...a.filter((x) => x === "civilian")].slice(0, n)), null)
-  return { r, ids }
-}
-const voteAll = (r, target) => {
-  for (const p of r.players.filter((p) => p.alive && p.id !== target)) U.act(r, p.id, { a: "vote", target })
-  // the target votes for somebody else so the count closes
-  if (r.phase === "vote") U.act(r, target, { a: "vote", target: r.players.find((p) => p.alive && p.id !== target).id })
+/** A game of n players with roles dealt in seat order: the given roles first, Civilians after; everyone has looked. */
+function game(n, roles) {
+  const names = Array.from({ length: n }, (_, i) => `P${i}`)
+  const config = { undercovers: roles.filter((r) => r === "undercover").length, mrWhites: roles.filter((r) => r === "mrwhite").length }
+  const g = U.deal(names, config, (a) => [...roles, ...a.filter((x) => x === "civilian")])
+  for (let i = 0; i < n; i++) U.seen(g)
+  U.openVote(g)
+  return g
 }
 
-test("deal refuses too many impostors and gives Mr White no word", () => {
-  const r = U.createRoom({ code: "X", config: { undercovers: 1, mrWhites: 1 } })
-  for (let i = 0; i < 4; i++) U.join(r, { name: `P${i}` })
-  assert.match(U.deal(r), /Too many impostors/)
-  U.join(r, { name: "P4" })
-  assert.equal(U.deal(r), null)
-  const mw = r.players.find((p) => p.role === "mrwhite")
-  assert.equal(U.view(r, mw.id).me.word, null)
-  assert.equal(U.view(r, mw.id).me.mrWhite, true)
-  assert.notEqual(r.words.civilian, r.words.undercover)
-  assert.notEqual(r.order[0], mw.id, "Mr White never speaks first")
+test("setup refuses bad line-ups", () => {
+  assert.match(U.setupError(["a", "b"], { undercovers: 1, mrWhites: 0 }), /at least 3/)
+  assert.match(U.setupError(["a", "b", "c", "d"], { undercovers: 1, mrWhites: 1 }), /Too many impostors/)
+  assert.match(U.setupError(["Ana", "ana", "b", "c"], { undercovers: 1, mrWhites: 0 }), /different name/)
+  assert.equal(U.setupError(["a", "b", "c", "d", "e"], { undercovers: 1, mrWhites: 1 }), null)
 })
 
-test("TV view leaks no roles or words until someone is out", () => {
-  const { r } = room(5, ["undercover", "mrwhite"])
-  const tv = JSON.stringify(U.view(r, null))
-  assert.ok(!tv.includes(r.words.civilian) && !tv.includes(r.words.undercover))
-  assert.ok(U.view(r, null).players.every((p) => p.role === null))
+test("the phone goes round once, then Mr White never speaks first", () => {
+  const g = U.deal(["a", "b", "c", "d", "e"], { undercovers: 1, mrWhites: 1 }, (a) => ["mrwhite", "undercover", "civilian", "civilian", "civilian"])
+  assert.equal(U.wordOf(g, 0), null)
+  assert.equal(U.wordOf(g, 1), g.words.undercover)
+  assert.equal(U.wordOf(g, 2), g.words.civilian)
+  assert.notEqual(g.words.civilian, g.words.undercover)
+  for (let i = 0; i < 4; i++) U.seen(g)
+  assert.equal(g.phase, "pass")
+  U.seen(g)
+  assert.equal(g.phase, "describe")
+  assert.notEqual(g.order[0], 0)
 })
 
 test("civilians win by voting out every impostor, 2 points each", () => {
-  const { r, ids } = room(5, ["undercover"], { undercovers: 1, mrWhites: 0 })
-  U.act(r, "host", { a: "vote" })
-  voteAll(r, ids[0])
-  assert.equal(r.phase, "over")
-  assert.equal(r.winner, "civilian")
-  assert.deepEqual(U.standings(r).map((s) => s.score), [0, 2, 2, 2, 2])
+  const g = game(5, ["undercover"])
+  assert.equal(U.eliminate(g, 0), null)
+  assert.equal(g.winner, "civilian")
+  assert.deepEqual(g.players.map((p) => p.score), [0, 2, 2, 2, 2])
 })
 
-test("impostors win when one civilian is left; a tie re-votes first", () => {
-  const { r, ids } = room(4, ["undercover"], { undercovers: 1, mrWhites: 0 })
-  U.act(r, "host", { a: "vote" })
-  voteAll(r, ids[1]) // a Civilian goes; three left, the game carries on
-  assert.equal(r.players[1].alive, false)
-  assert.equal(r.phase, "describe")
-  U.act(r, "host", { a: "vote" })
-  U.act(r, ids[0], { a: "vote", target: ids[2] })
-  U.act(r, ids[2], { a: "vote", target: ids[3] })
-  U.act(r, ids[3], { a: "vote", target: ids[0] })
-  assert.deepEqual(r.runoff?.length, 3, "three-way tie goes to a re-vote")
-  assert.match(U.act(r, ids[0], { a: "vote", target: ids[0] }), /another player/)
-  U.act(r, ids[0], { a: "vote", target: ids[2] })
-  U.act(r, ids[3], { a: "vote", target: ids[2] })
-  U.act(r, ids[2], { a: "vote", target: ids[3] })
-  assert.equal(r.winner, "undercover")
-  assert.equal(U.standings(r)[0].score, U.POINTS.undercover)
+test("impostors win once one civilian is left", () => {
+  const g = game(4, ["undercover"])
+  U.eliminate(g, 1)
+  assert.equal(g.phase, "describe", "three left, the game goes on")
+  assert.match(U.eliminate(g, 2), /Not the time/)
+  U.openVote(g)
+  assert.match(U.eliminate(g, 1), /still in/)
+  U.eliminate(g, 2)
+  assert.equal(g.winner, "undercover")
+  assert.equal(g.players[0].score, U.POINTS.undercover)
 })
 
 test("caught Mr White wins alone with the right word, game goes on with a wrong one", () => {
-  const { r, ids } = room(5, ["mrwhite"], { undercovers: 0, mrWhites: 1 })
-  U.act(r, "host", { a: "vote" })
-  voteAll(r, ids[0])
-  assert.equal(r.phase, "guess")
-  assert.match(U.act(r, ids[1], { a: "guess", word: "x" }), /Not your guess/)
-  U.act(r, ids[0], { a: "guess", word: ` ${r.words.civilian.toUpperCase()}!` })
-  assert.equal(r.winner, "mrwhite")
-  assert.deepEqual(U.standings(r).map((s) => s.score), [6, 0, 0, 0, 0])
+  const g = game(5, ["mrwhite", "undercover"])
+  U.eliminate(g, 0)
+  assert.equal(g.phase, "guess")
+  U.guessWord(g, ` ${g.words.civilian.toUpperCase()}!`)
+  assert.equal(g.winner, "mrwhite")
+  assert.deepEqual(g.players.map((p) => p.score), [6, 0, 0, 0, 0])
 
-  const b = room(5, ["mrwhite", "undercover"], { undercovers: 1, mrWhites: 1 })
-  U.act(b.r, "host", { a: "vote" })
-  voteAll(b.r, b.ids[0])
-  U.act(b.r, b.ids[0], { a: "guess", word: "definitely not it" })
-  assert.equal(b.r.phase, "describe")
-})
-
-test("seats survive reconnects; nobody new joins mid-game", () => {
-  const r = U.createRoom({ code: "X" })
-  const a = U.join(r, { name: "Ana" })
-  for (const n of ["Bo", "Cy", "Di", "Ed"]) U.join(r, { name: n })
-  U.deal(r)
-  assert.equal(U.join(r, { token: a.token }).player, a.player)
-  assert.match(U.join(r, { name: "Late" }).error, /started/)
+  const b = game(5, ["mrwhite", "undercover"])
+  U.eliminate(b, 0)
+  U.guessWord(b, "definitely not it")
+  assert.equal(b.phase, "describe")
 })
