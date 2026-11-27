@@ -26,9 +26,10 @@ Shaam is the evening around the games: one party code, one guest list, and one
 scoreboard. The idea is that a group joins once, plays several games without
 rejoining, and ends the night knowing who did best overall.
 
-- **Reverie** is built in: a storytelling and guessing game in the spirit of
-  Dixit for 3 to 12 players.
-- **Noggin, Chorusify, Croon, Katze, Consensus and Dabber** launch from the same
+Every game is listed on the front page and starts with one tap, party or not.
+
+- **Undercover** is built in: a hidden-word bluffing game for 3 to 20 players.
+- **Noggin, Chorusify, Bleep, Haggle, Croon, Katze, Consensus and Dabber** launch from the same
   shelf and play exactly as they always have. Their result is typed in on the
   party TV.
 
@@ -40,38 +41,29 @@ Adding a game, built-in or outside: [GAMES.md](GAMES.md).
 2. Guests scan it on their phones (`/join`) and pick a name once.
 3. The host picks a game off the shelf. Games can be switched off for the night
    with the "In tonight" toggle.
-4. For Reverie, phones follow the TV into the game and back out at the end. The
-   result goes to the party on its own.
+4. For Undercover, phones follow the TV into the game, and the result goes to
+   the party on its own.
 5. For an outside game, the host opens its room and types the room code into
    the party TV. Every phone gets an "Open <game>" button with the code and
    name filled in, so it is one tap. Afterwards the host types the scores into
    the form on the TV.
 
 The leaderboard ranks by placement (one point per player beaten), so 900 Noggin
-points and 30 Reverie points weigh the same.
+points and 6 Undercover points weigh the same.
 
-## Reverie
+## Undercover
 
-- Each player holds 6 cards. The storyteller picks one and gives a clue, the
-  others each play a card that fits, then everyone votes for the storyteller's.
-- Scoring: if nobody or everybody finds it, the storyteller gets 0 and everyone
-  else 2. Otherwise the storyteller and each correct guesser get 3. On top, 1
-  point per vote your own card drew, capped at 3.
-- The host sets max players (6 to 12), rounds, and the timers for submitting,
-  discussing and voting. Clocks can be paused.
-- Custom clues can be turned off, then the storyteller picks one of three
-  offered prompts.
-- Seats survive reconnects. A player who drops is marked, and the game carries on.
-- Picture packs:
-  - **Dreamscapes**, 240 original surreal scenes drawn in code (`src/lib/cardArt.js`)
-  - **Visions**, symbolists and visionaries (Redon, Blake, Goya, Bosch, Moreau)
-  - **Floating World**, Japanese woodblock prints
-  - **Cabinet of Curiosities**, odd creatures, insects and devils from old prints
-  - **Lost Worlds**, ruins, abysses, storms and impossible cities
-
-The photo packs are public-domain (CC0) works from
-[The Met's open collection](https://www.metmuseum.org/art/collection). Credits
-for every card are in `public/packs/<slug>/credits.json` and `shared/packs.js`.
+- Most players are Civilians and share a secret word. The Undercovers get a
+  close cousin of it (Coffee and Tea), and Mr White gets nothing. Undercovers
+  are not told they are undercover.
+- Each round everyone says one clue out loud, in an order the TV shows (Mr
+  White never goes first). Then everyone votes on their phone; the player out
+  is revealed. A tie re-votes between the tied, a second tie sends nobody out.
+- A caught Mr White gets one guess at the Civilians' word and wins alone if right.
+- Civilians win by clearing every impostor; impostors win once one Civilian is
+  left. Points: Civilians 2 each, Undercovers 10, a surviving Mr White 6.
+- The host picks how many Undercovers and Mr Whites, and can play again with
+  the same players.
 
 ## Stack
 
@@ -87,12 +79,12 @@ flowchart LR
   TV["TV /tv"] <-- WebSocket --> Relay
   Phones["Phones /join"] <-- WebSocket --> Relay
   Relay["server/index.js"] --> Party["server/party.js<br/>parties, leaderboard"]
-  Relay --> Reverie["server/games/reverie.js<br/>rules, scoring"]
+  Relay --> Undercover["server/games/undercover.js<br/>rules, scoring"]
   Outside["Outside games"] -. "POST /api/parties/:code/results" .-> Relay
 ```
 
 The relay owns the connections and the clock. A built-in game is plain
-functions over a room object, and every screen gets a redacted view (hands and
+functions over a room object, and every screen gets a redacted view (words, roles and
 votes stay private until the reveal). The full engine contract, and the optional
 results API for outside games, are in [GAMES.md](GAMES.md).
 
@@ -108,13 +100,6 @@ npm run build && npm start   # production: one process serves dist/, /api and /w
 ```
 
 `npm run dev` binds to `0.0.0.0`, so phones on the same wifi can reach it.
-
-To rebuild the picture packs from The Met (needs ImageMagick's `magick`):
-
-```bash
-node scripts/packs.mjs            # build missing packs, keep finished ones
-node scripts/packs.mjs ukiyo      # also rebuild this one
-```
 
 There is also a `Dockerfile` that builds one container serving everything on
 port 4401. On push to `main`, a GitHub Action builds the image and pushes it to
@@ -134,16 +119,13 @@ GHCR. `deploy/` holds the compose file and Caddy block I use to host it.
 | --- | --- |
 | `server/index.js` | relay: static files, `/api`, the WebSocket |
 | `server/party.js` | parties, the cross-game leaderboard, JSON persistence in `data/` |
-| `server/games/reverie.js` | Reverie's rules, scoring and redacted views |
+| `server/games/undercover.js` | Undercover's rules, word pairs, scoring and redacted views |
 | `shared/games.js` | the shelf |
-| `shared/packs.js` | Reverie picture packs and their credits (generated) |
-| `src/lib/cardArt.js` | the Reverie deck as seeded SVG scenes |
-| `src/pages/` | `/`, `/tv`, `/join`, `/reverie` (TV) and `/reverie/play` (phone) |
+| `src/pages/` | `/`, `/tv`, `/join`, `/undercover` (TV) and `/undercover/play` (phone) |
 
 ## Licence
 
-No licence file yet, all rights reserved. The Met images in `public/packs/` are
-public domain (CC0).
+No licence file yet, all rights reserved.
 
 ---
 

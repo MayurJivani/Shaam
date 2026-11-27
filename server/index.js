@@ -17,14 +17,14 @@ import { fileURLToPath } from "node:url"
 import { WebSocketServer } from "ws"
 
 import { gameBySlug } from "../shared/games.js"
-import * as reverie from "./games/reverie.js"
+import * as undercover from "./games/undercover.js"
 import * as P from "./party.js"
 
 const PORT = Number(process.env.SHAAM_PORT ?? 4401)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const DIST = path.resolve(process.env.SHAAM_DIST_DIR ?? path.join(ROOT, "dist"))
 const ROOM_IDLE_MS = 30 * 60_000
-const ENGINES = { reverie } // built-in games by slug; each follows the contract in GAMES.md
+const ENGINES = { undercover } // built-in games by slug; each follows the contract in GAMES.md
 
 P.loadParties(path.resolve(process.env.SHAAM_DATA_DIR ?? path.join(ROOT, "data")))
 
@@ -58,6 +58,8 @@ function pushRoom(code) {
   const now = Date.now()
   for (const c of conns) if (c.room === code) send(c.ws, { t: "game", view: room.engine.view(room.state, c.playerId ?? null, now), host: !!c.host })
   // A finished game reports to its party once, then the party shelf comes back on every screen.
+  // A room the host sends back to its lobby for another go reports again at its next game over.
+  if (room.state.phase !== "over") room.reported = false
   const standings = !room.reported && room.state.party && room.engine.standings(room.state)
   if (standings) {
     room.reported = true

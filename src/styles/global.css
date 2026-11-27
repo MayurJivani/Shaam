@@ -1,7 +1,6 @@
 /*
- * Two worlds share one layout.
+ * Shaam's one world; built-in games wear it too.
  *   street: Shaam's party pages. A black wall slapped with die-cut stickers, tape, marker and spray.
- *   dream:  Reverie. Pastel absurd: soft lilac-to-mint ground, cream cut-outs with ink outlines.
  * Layout rules below are world-free; colours and type come from the tokens each world sets.
  */
 :root {
@@ -28,29 +27,6 @@ body[data-world="street"] {
   --brand: "Rubik Spray Paint", "Anton", sans-serif;
   --radius: 14px;
   color-scheme: dark;
-}
-body[data-world="dream"] {
-  --bg: #cfd2f0;
-  --text: #1f2340;
-  --mist: #4d5170;
-  --paper: #fdf8ee;
-  --on-paper: #1f2340;
-  --paper-mist: #5a5d78;
-  --accent: #f08a6e; /* coral */
-  --on-accent: #1f2340;
-  --hot: #e2584a;
-  --pink: #f2a7c3;
-  --cobalt: #5b6fd6;
-  --yellow: #f6d77a;
-  --teal: #5fb3a5;
-  --line: #1f2340;
-  --die: #1f2340; /* the ink outline */
-  --display: "Fraunces", Georgia, serif;
-  --body: "Bricolage Grotesque", system-ui, sans-serif;
-  --hand: "Fraunces", Georgia, serif;
-  --brand: "Fraunces", Georgia, serif;
-  --radius: 22px;
-  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -124,7 +100,7 @@ button, input, select { font: inherit; color: inherit; }
 .shelf-card { display: grid; gap: 6px; align-content: start; text-align: left; padding: 1.1em 1.2em 1.2em; border-radius: var(--radius); border: 0; cursor: pointer; transition: transform .25s cubic-bezier(.2, .9, .3, 1.3); }
 .shelf-name { font-family: var(--display); font-size: 1.8em; line-height: 1; }
 .shelf-meta { font-size: .85em; font-weight: 700; opacity: .75; }
-.shelf.static .shelf-card { cursor: default; }
+a.shelf-card { text-decoration: none; }
 .shelf-slot { display: grid; position: relative; }
 .shelf-slot .shelf-card { height: 100%; }
 .shelf-slot.out .shelf-card { filter: grayscale(1); opacity: .35; cursor: not-allowed; }
@@ -156,19 +132,10 @@ button, input, select { font: inherit; color: inherit; }
 .ranks .pts { font-family: var(--display); font-size: 1.7em; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
 .history { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .9em; opacity: .75; }
 
-/* ---- cards (Reverie) ------------------------------------------------------- */
-.card { position: relative; aspect-ratio: 2 / 3; border-radius: 7% / 4.6%; overflow: hidden; padding: 0; background: var(--paper); border: 3px solid var(--die); box-shadow: 0 10px 0 -3px rgba(31, 35, 64, .9), 0 22px 40px rgba(31, 35, 64, .28); transition: transform .3s cubic-bezier(.2, .9, .3, 1.3), box-shadow .3s, opacity .25s; display: block; }
-.card img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.card.back { background: radial-gradient(circle at 50% 50%, var(--yellow) 0 9%, var(--on-paper) 9.5% 11%, transparent 11.5%), repeating-radial-gradient(circle at 50% 50%, var(--pink) 0 8%, var(--paper) 8% 16%); }
-button.card { cursor: pointer; }
-.card.selected { transform: translateY(-8px) rotate(-1.5deg); box-shadow: 0 0 0 4px var(--accent), 0 14px 0 -3px rgba(31, 35, 64, .9), 0 26px 50px rgba(31, 35, 64, .3); }
-.card.disabled { opacity: .35; cursor: not-allowed; }
-.card .num { position: absolute; top: 5%; left: 6%; width: 1.8em; height: 1.8em; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--on-paper); border: 2px solid var(--die); font-family: var(--display); font-weight: 800; z-index: 1; }
-
-/* ---- Reverie TV ------------------------------------------------------------- */
-.reverie { grid-template-rows: auto 1fr auto; }
-.rv-head { display: flex; align-items: center; gap: 1.4em; }
-.rv-head .brand { font-size: 2.2em; margin-right: auto; }
+/* ---- built-in game TV ------------------------------------------------------ */
+.game { grid-template-rows: auto 1fr auto; }
+.game-head { display: flex; align-items: center; gap: 1.4em; }
+.game-head .brand { font-size: 2.2em; margin-right: auto; }
 .round { font-family: var(--display); font-style: italic; font-size: 1.2em; color: var(--mist); }
 .timer { font-family: var(--display); font-weight: 800; font-size: 1.7em; min-width: 3ch; text-align: right; font-variant-numeric: tabular-nums; }
 .timer.hurry { color: var(--hot); animation: pulse 1s infinite; }
@@ -179,41 +146,16 @@ button.card { cursor: pointer; }
 .moment { display: grid; justify-items: center; gap: 2.4vh; animation: rise .6s cubic-bezier(.2, .8, .2, 1); }
 @keyframes rise { from { opacity: 0; transform: translateY(20px); } }
 
-.clue { margin: 0; text-align: center; animation: rise .6s cubic-bezier(.2, .8, .2, 1); }
-.clue blockquote { margin: 0; font-family: var(--display); font-style: italic; font-size: 4.2em; line-height: 1.05; max-width: 22ch; text-wrap: balance; }
-.clue.small blockquote { font-size: 2.6em; }
-.clue figcaption { display: inline-flex; align-items: center; gap: 8px; color: var(--mist); margin-top: .5em; font-weight: 600; }
-
-.backs { display: flex; gap: 1.2vw; }
-.backs .card { width: 6.5vw; }
-.backs .card.waiting { opacity: .25; transform: translateY(10px); }
-.backs .card.in { animation: land .55s cubic-bezier(.2, .9, .3, 1.3); }
-@keyframes land { from { transform: translateY(-50px) rotate(-10deg); opacity: 0; } }
-
-/* Up to six cards in one row, seven to twelve in two; sized by height so they fill the room. */
-.table { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.8vh 1.3vw; max-width: 100%; }
-.table .card { height: 52vh; }
-.table .card:nth-child(odd) { rotate: -1.2deg; }
-.table .card:nth-child(even) { rotate: 1deg; }
-.table.two-rows { max-width: calc((25vh * 2 / 3 + 1.3vw) * 6.1); }
-.table.two-rows .card { height: 25vh; }
-.table .card.deal { animation: deal .7s cubic-bezier(.2, .8, .2, 1) backwards; }
-@keyframes deal { from { opacity: 0; transform: translateY(40px) rotateY(80deg); } }
-.table.reveal .card { animation: deal .7s cubic-bezier(.2, .8, .2, 1) backwards; }
-.table.reveal .card.storyteller { box-shadow: 0 0 0 6px var(--accent), 0 10px 0 3px rgba(31, 35, 64, .9), 0 30px 60px rgba(31, 35, 64, .35); transform: scale(1.05); rotate: 0deg; }
-.table.reveal .card.decoy { opacity: .8; }
-.card .owner { position: absolute; left: 6%; right: 6%; bottom: 5%; padding: 5px 8px; border-radius: 999px; background: var(--paper); border: 2px solid var(--die); color: var(--on-paper); display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: .85em; z-index: 1; }
-.card.storyteller .owner { background: var(--accent); }
-.card .voters { position: absolute; top: 5%; right: 5%; display: flex; flex-direction: column; gap: 3px; z-index: 1; }
-
-.rv-players { display: flex; justify-content: center; gap: 1vw; flex-wrap: wrap; }
+.game-players { display: flex; justify-content: center; gap: 1vw; flex-wrap: wrap; }
 .seat { position: relative; display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; column-gap: 8px; align-items: center; padding: 5px 14px 5px 5px; border-radius: 999px; border: 2px solid var(--die); transition: background .3s, transform .3s; }
 .seat .avatar { grid-row: 1 / 3; }
 .seat-name { font-weight: 800; font-size: .9em; }
 .seat-score { font-family: var(--display); font-weight: 800; font-variant-numeric: tabular-nums; }
-.seat.teller { background: var(--yellow); transform: translateY(-4px); }
-.seat.teller::before { content: ""; position: absolute; top: -12px; left: 16px; width: 16px; height: 16px; background: var(--hot); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-.seat.done { background: #d5efe7; }
+.seat.speaking { background: var(--yellow); transform: translateY(-4px); }
+.seat.speaking::before { content: ""; position: absolute; top: -12px; left: 16px; width: 16px; height: 16px; background: var(--hot); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.seat.done { background: var(--accent); color: var(--on-accent); }
+.seat.out { opacity: .45; text-decoration: line-through; }
+.seat .role { font-size: .75em; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
 .seat.gone { opacity: .5; }
 .seat .tick { position: absolute; top: -7px; right: -5px; background: var(--teal, var(--accent)); color: var(--paper); border: 2px solid var(--die); border-radius: 50%; width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px; font-weight: 800; }
 .seat .delta { position: absolute; top: -15px; right: -8px; background: var(--accent); color: var(--on-accent); border: 2px solid var(--die); border-radius: 999px; padding: 0 8px; font-weight: 800; animation: slap .5s cubic-bezier(.2, .9, .3, 1.4) backwards; animation-delay: 1s; }
@@ -248,23 +190,16 @@ button.card { cursor: pointer; }
 .phone-card h2 { font-size: 1.9em; line-height: 1.05; }
 .phone-card.big { padding: 40px 22px; }
 .phone-card.big h2 { font-size: 2.5em; }
-.clue-bar { font-family: var(--display); font-style: italic; font-size: 1.7em; text-align: center; line-height: 1.15; text-wrap: balance; }
-.clue-bar span { display: block; font: 600 .48em var(--body); color: var(--mist); font-style: normal; margin-top: 6px; }
-.hand { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.hand.vote { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.hand .card .yours { position: absolute; bottom: 5%; left: 10%; right: 10%; text-align: center; font-weight: 800; font-size: .75em; text-transform: uppercase; letter-spacing: .08em; z-index: 1; background: var(--paper); color: var(--on-paper); border: 2px solid var(--die); border-radius: 999px; padding: 2px 0; }
-.played { display: grid; justify-items: center; gap: 10px; }
-.played .card { width: 60%; }
-.played .card.small { width: 34%; }
-
-.sheet { position: fixed; inset: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(6px); display: grid; align-content: center; justify-items: center; gap: 18px; padding: 24px; animation: fade .2s; }
-@keyframes fade { from { opacity: 0; } }
-.sheet-card { width: min(72vw, 46dvh); animation: rise .3s cubic-bezier(.2, .8, .2, 1); }
-.sheet-close { position: absolute; top: max(14px, env(safe-area-inset-top)); right: 14px; width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--die); background: var(--paper); color: var(--on-paper); font-weight: 800; cursor: pointer; }
-.sheet .btn.big { width: min(100%, 360px); }
-.tell { display: grid; gap: 12px; width: min(100%, 360px); }
-.tell input { padding: 14px 16px; border-radius: 16px; border: 3px solid var(--die); background: var(--paper); color: var(--on-paper); font-size: 1.25em; font-family: var(--display); font-style: italic; text-align: center; }
-.prompts { display: grid; gap: 8px; }
+.word { font-family: var(--display); font-size: clamp(2.6rem, 14vw, 4.4rem); line-height: 1; text-transform: uppercase; overflow-wrap: anywhere; }
+.word.hidden { filter: blur(14px); user-select: none; }
+.vote-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.vote-list .btn { justify-content: flex-start; padding: .5em .8em; min-height: 56px; }
+.guess { display: grid; gap: 12px; width: min(100%, 360px); }
+.guess input { padding: 14px 16px; border-radius: 16px; border: 3px solid var(--die); background: var(--paper); color: var(--on-paper); font-size: 1.25em; font-family: var(--display); text-align: center; }
+.order { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; counter-reset: o; }
+.order li { counter-increment: o; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.3em; }
+.order li::before { content: counter(o); font-family: var(--display); color: var(--hot); }
+.tally { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
 
 .join-form { display: grid; gap: 14px; padding: 20px; border-radius: var(--radius); }
 .join-form label { display: grid; gap: 6px; font-size: .9em; font-weight: 700; }
@@ -326,7 +261,7 @@ button.card { cursor: pointer; }
 [data-world="street"] .shelf > :nth-child(5n + 5) { --slap: var(--yellow); --slap-ink: #121212; --tilt: -1.8deg; }
 [data-world="street"] .shelf-card :is(.shelf-blurb, .shelf-meta) { color: inherit; }
 [data-world="street"] .shelf-name { font-weight: 400; text-transform: uppercase; font-size: 2.1em; }
-[data-world="street"] button.shelf-card:hover { rotate: 0deg; transform: translateY(-6px) scale(1.03); box-shadow: 0 0 0 7px var(--die), 0 22px 34px rgba(0, 0, 0, .6); }
+[data-world="street"] :is(a, button).shelf-card:hover { rotate: 0deg; transform: translateY(-6px) scale(1.03); box-shadow: 0 0 0 7px var(--die), 0 22px 34px rgba(0, 0, 0, .6); }
 [data-world="street"] .btn { box-shadow: 0 0 0 3px var(--die); border-color: var(--on-paper); }
 [data-world="street"] .btn.ghost { box-shadow: none; }
 [data-world="street"] .phone .btn.ghost, [data-world="street"] .landing .btn:not(.primary) { background: var(--paper); color: var(--on-paper); }
@@ -335,34 +270,6 @@ button.card { cursor: pointer; }
 [data-world="street"] .chip { box-shadow: 0 0 0 3px var(--die); }
 [data-world="street"] .me-bar { box-shadow: 0 0 0 4px var(--die); }
 [data-world="street"] .code-tag { color: var(--hot); }
-
-/* ============================================================================
- * DREAM: pastel and absurd. Cream cut-outs drawn in one ink line.
- * ========================================================================== */
-[data-world="dream"] body, body[data-world="dream"] { background: linear-gradient(160deg, #cdd0f2 0%, #d9d3ee 40%, #cfe6dd 100%) fixed; }
-[data-world="dream"] .sky i { border-radius: 50%; border: 3px solid var(--line); animation: bob 14s ease-in-out infinite alternate; }
-/* Kept to the margins: a half-set sun bottom-left, a small moon in the left gutter. */
-[data-world="dream"] .sky i:nth-child(1) { width: 12vmax; height: 12vmax; left: -5vmax; bottom: -5vmax; background: var(--yellow); }
-[data-world="dream"] .sky i:nth-child(2) { width: 3.4vmax; height: 3.4vmax; left: 2vw; top: 46vh; background: var(--pink); animation-duration: 18s; }
-[data-world="dream"] .sky i:nth-child(3), [data-world="dream"][data-screen="phone"] .sky i { display: none; }
-@keyframes bob { to { transform: translateY(-2.4vh) rotate(6deg); } }
-[data-world="dream"] :is(.panel, .phone-card, .join-form, .how li, .ranks li) {
-  border: 3px solid var(--line); box-shadow: 0 7px 0 -1px var(--line), 0 18px 30px rgba(31, 35, 64, .16);
-}
-[data-world="dream"] .brand { font-family: var(--brand); font-style: italic; font-weight: 800; font-size: 2.8em; color: var(--on-paper); font-variation-settings: "SOFT" 100, "WONK" 1; }
-[data-world="dream"] .brand::after { content: ""; display: inline-block; width: .32em; height: .32em; margin-left: .12em; border-radius: 50%; background: var(--accent); border: 3px solid var(--line); vertical-align: .9em; }
-[data-world="dream"] .brand.small { font-size: 2.3em; text-align: center; margin: 8px 0 16px; }
-[data-world="dream"] :is(h2, .display, .clue blockquote, .clue-bar) { font-variation-settings: "SOFT" 100, "WONK" 1; }
-[data-world="dream"] .display { font-style: italic; font-weight: 700; }
-[data-world="dream"] .clue blockquote { font-weight: 600; }
-[data-world="dream"] .big-code { font-weight: 800; color: var(--hot); font-variation-settings: "SOFT" 100; }
-[data-world="dream"] .btn { box-shadow: 0 4px 0 var(--line); border-width: 3px; }
-[data-world="dream"] .btn:active:not(:disabled) { box-shadow: 0 1px 0 var(--line); transform: translateY(3px); }
-[data-world="dream"] .ranks li.lead { background: var(--yellow); }
-[data-world="dream"] .ranks .rank { font-style: italic; color: var(--hot); }
-[data-world="dream"] .timer { color: var(--on-paper); }
-[data-world="dream"] .qr { border: 3px solid var(--line); border-radius: 14px; }
-[data-world="dream"] .seat.done { background: #d5efe7; }
 
 @media (max-width: 900px) {
   .party-tv { grid-template-columns: 1fr; height: auto; }

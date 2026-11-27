@@ -16,10 +16,10 @@ test("party host key and player tokens are checked", () => {
 test("line-up: no list means every game, a list limits it", () => {
   const { party } = P.createParty("LINE")
   assert.equal(P.inParty(party, "noggin"), true)
-  party.games = ["reverie"]
+  party.games = ["undercover"]
   assert.equal(P.inParty(party, "noggin"), false)
-  assert.equal(P.inParty(party, "reverie"), true)
-  assert.deepEqual(P.publicParty(party).games, ["reverie"])
+  assert.equal(P.inParty(party, "undercover"), true)
+  assert.deepEqual(P.publicParty(party).games, ["undercover"])
 })
 
 test("outside game link carries room code and name, falls back to the game's page", async () => {
@@ -33,7 +33,7 @@ test("leaderboard ranks by placement across games", () => {
   const { party } = P.createParty("EFGH")
   const ana = P.joinParty(party, { name: "Ana" }).player
   const bo = P.joinParty(party, { name: "Bo" }).player
-  P.recordResult(party, "reverie", [
+  P.recordResult(party, "undercover", [
     { partyId: ana.id, score: 30 },
     { partyId: bo.id, score: 12 },
     { name: "Guest", score: 12 },

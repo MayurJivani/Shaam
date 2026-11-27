@@ -10,12 +10,17 @@
 import { createHash, randomBytes } from "node:crypto"
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs"
 import path from "node:path"
-import { cleanText } from "./games/reverie.js"
 
 const MAX_PLAYERS = 24
 const TTL_MS = 48 * 60 * 60_000
 const hash = (t) => createHash("sha256").update(t).digest("hex")
 const secret = () => randomBytes(18).toString("base64url")
+
+/** Strip control characters and collapse whitespace; the result is shown on a TV. */
+export function cleanText(s, max) {
+  if (typeof s !== "string") return ""
+  return s.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max)
+}
 
 export const parties = new Map()
 
@@ -70,7 +75,7 @@ export function recordResult(party, game, standings) {
 }
 
 /**
- * Games score on different scales (Noggin in hundreds, Reverie in tens), so the
+ * Games score on different scales (Noggin in hundreds, Undercover in single digits), so the
  * party ranks by placement: each game is worth one point per player you beat.
  * Ties beat nobody they tie with.
  */

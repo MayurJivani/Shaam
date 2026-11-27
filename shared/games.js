@@ -9,9 +9,11 @@
  *          party TV and {name} the player's party name, so nobody types either twice.
  */
 export const GAMES = [
-  { slug: "reverie", name: "Reverie", builtIn: true, players: "3 to 12", blurb: "One clue, a table of strange pictures. Find the storyteller's card." },
+  { slug: "undercover", name: "Undercover", builtIn: true, players: "3 to 20", blurb: "Everyone has the same word. Almost. Find the Undercovers and Mr White." },
   { slug: "noggin", name: "Noggin", url: "https://noggin.futile.studio/host", join: "https://noggin.futile.studio/play?code={code}&name={name}", players: "2 to 12", blurb: "A quiz-board game show. Buzz from your phone." },
   { slug: "chorusify", name: "Chorusify", url: "https://chorusify.com/multiplayer", join: "https://chorusify.com/room/{code}?name={name}", players: "2 to 8", blurb: "Name the song from the first second of it." },
+  { slug: "bleep", name: "Bleep", url: "https://bleep.futile.studio", join: "https://bleep.futile.studio/{code}", players: "4 to 12", blurb: "Two channels, secret keywords. Send clues your team gets and the others don't." },
+  { slug: "haggle", name: "Haggle", url: "https://haggle.futile.studio/rooms", join: "https://haggle.futile.studio/room/{code}", players: "any", blurb: "A live stock market for the whole room. Trade and finish richest." },
   { slug: "croon", name: "Croon", url: "https://croon.futile.studio/rooms", join: "https://croon.futile.studio/r/{code}?name={name}", players: "any", blurb: "Karaoke lounge. The queue rotates so everybody sings." },
   { slug: "katze", name: "Katze", url: "https://katze.futile.studio", join: "https://katze.futile.studio/?code={code}&name={name}", players: "3 to 6", blurb: "Skull, with Schrodinger's cat. Bluff your boxes." },
   { slug: "consensus", name: "Consensus", url: "https://consensus.futile.studio/host", join: "https://consensus.futile.studio/play?code={code}&name={name}", players: "any", blurb: "Read the room, not the answer key." },
